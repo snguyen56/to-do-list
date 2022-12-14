@@ -1,11 +1,11 @@
-import { Card } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import TextField from "@mui/material/TextField";
-// import IconButton from "@mui/material/IconButton";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import AlarmIcon from "@mui/icons-material/Alarm";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import "./App.css";
@@ -17,56 +17,79 @@ type todo = {
   userId: number;
 };
 
-function fetchToDo<T>(resourceUrl: string): Promise<T> {
-  return fetch(resourceUrl).then((response) => {
-    // fetching the reponse body data
-    return response.json<T>();
-  });
-}
-
 function App() {
-  const [todo, setTodo] = useState<todo>({
-    id: 1,
-    todo: "",
-    completed: false,
-    userId: 1,
-  });
-  const [todoList, setTodoList] = useState<todo[]>();
+  const [todo, setTodo] = useState<string>("");
+  const [todoList, setTodoList] = useState<todo[]>([]);
+
+  const handleDelete = async (item: todo) => {
+    setTodoList((todoList) =>
+      todoList?.filter((todo: todo) => todo.id !== item.id)
+    );
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (todo === "") {
+      console.log("input cannot be empty");
+    } else {
+      const newTodo: todo = {
+        id: todoList.length + 1,
+        todo: todo,
+        completed: false,
+        userId: 1,
+      };
+      setTodoList((todoList) => [...todoList, newTodo]);
+    }
+  };
 
   useEffect(() => {
     fetch("https://dummyjson.com/todos?limit=5")
       .then((res) => res.json())
       .then((data) => setTodoList(data.todos));
     // .then((data) => console.log(data.todos));
+    // if (todoList) console.log(todoList);
   }, []);
 
   return (
-    <div>
+    <>
       <Card className="card" raised>
-        <CardHeader title="To Do" />
-        <CardContent>
-          <TextField variant="outlined" />
-          <Button className="button" variant="contained" disableRipple>
-            Add
-          </Button>
+        <CardHeader title="To Do List" />
+        <CardContent sx={{ width: "100%" }}>
+          <form noValidate onSubmit={handleSubmit} style={{ width: "100%" }}>
+            <TextField
+              className="textbox"
+              variant="outlined"
+              onChange={(event) => setTodo(event.target.value)}
+            />
+            <Button
+              type="submit"
+              className="button"
+              variant="contained"
+              disableRipple
+            >
+              Add
+            </Button>
+          </form>
         </CardContent>
         <Box sx={{ p: 2 }}>
           <ul>
             {todoList?.map((data: any) => (
-              <li>
-                {data.todo}{" "}
-                {/* <IconButton aria-label="delete">
-                  <DeleteIcon />
-                </IconButton> */}
+              <li key={data.id}>
+                <Typography>
+                  {data.todo}
+                  <IconButton disableRipple>
+                    <ModeEditIcon />
+                  </IconButton>
+                  <IconButton disableRipple onClick={() => handleDelete(data)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Typography>
               </li>
             ))}
-            <li>test</li>
-            <li>test</li>
-            <li>test</li>
           </ul>
         </Box>
       </Card>
-    </div>
+    </>
   );
 }
 
