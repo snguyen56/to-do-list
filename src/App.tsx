@@ -1,11 +1,8 @@
-import { Card, Typography } from "@mui/material";
+import { Card } from "@mui/material";
 import Button from "@mui/material/Button";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { Box } from "@mui/system";
 import { useEffect, useState, useContext } from "react";
 import { ColorModeContext } from "./hooks/ColorModeContext";
@@ -14,6 +11,7 @@ import "./App.css";
 import Switch from "@mui/material/Switch/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import CardActions from "@mui/material/CardActions/CardActions";
+import ToDoList from "./components/ToDoList";
 
 type todo = {
   id: number;
@@ -31,6 +29,14 @@ function App() {
   const handleDelete = async (item: todo) => {
     setTodoList((todoList) =>
       todoList?.filter((todo: todo) => todo.id !== item.id)
+    );
+  };
+
+  const handleEdit = async (item: todo) => {
+    setTodoList((todoList) =>
+      todoList?.map((input) => {
+        return input.id === item.id ? { ...input, todo: item.todo } : input;
+      })
     );
   };
 
@@ -54,7 +60,6 @@ function App() {
     fetch("https://dummyjson.com/todos?limit=5")
       .then((res) => res.json())
       .then((data) => setTodoList(data.todos));
-    // .then((data) => console.log(data.todos));
     // if (todoList) console.log(todoList);
   }, []);
 
@@ -89,15 +94,18 @@ function App() {
           <ul>
             {todoList?.map((data: any) => (
               <li key={data.id}>
-                <Typography>
+                <ToDoList
+                  data={data}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                />
+                {/* <Typography>
                   {data.todo}
-                  <IconButton disableRipple>
-                    <ModeEditIcon />
-                  </IconButton>
+                  <EditDialog data={data} handleEdit={handleEdit} />
                   <IconButton disableRipple onClick={() => handleDelete(data)}>
                     <DeleteIcon />
                   </IconButton>
-                </Typography>
+                </Typography> */}
               </li>
             ))}
           </ul>
