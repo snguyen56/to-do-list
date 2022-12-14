@@ -1,0 +1,14 @@
+.card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 700px;
+  min-width: 500px;
+  margin: auto;
+}
+.button {
+  height: 100%;
+}
+ul {
+  list-style: none;
+}
