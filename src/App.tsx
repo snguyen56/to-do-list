@@ -7,8 +7,13 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ColorModeContext } from "./hooks/ColorModeContext";
+import { useTheme } from "@mui/material/styles";
 import "./App.css";
+import Switch from "@mui/material/Switch/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import CardActions from "@mui/material/CardActions/CardActions";
 
 type todo = {
   id: number;
@@ -18,6 +23,8 @@ type todo = {
 };
 
 function App() {
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
   const [todo, setTodo] = useState<string>("");
   const [todoList, setTodoList] = useState<todo[]>([]);
 
@@ -39,6 +46,7 @@ function App() {
         userId: 1,
       };
       setTodoList((todoList) => [...todoList, newTodo]);
+      setTodo("");
     }
   };
 
@@ -55,11 +63,17 @@ function App() {
       <Card className="card" raised>
         <CardHeader title="To Do List" />
         <CardContent sx={{ width: "100%" }}>
-          <form noValidate onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <form
+            noValidate
+            autoComplete="off"
+            onSubmit={handleSubmit}
+            style={{ width: "100%" }}
+          >
             <TextField
               className="textbox"
               variant="outlined"
               onChange={(event) => setTodo(event.target.value)}
+              value={todo}
             />
             <Button
               type="submit"
@@ -88,6 +102,15 @@ function App() {
             ))}
           </ul>
         </Box>
+        <CardActions>
+          <FormControlLabel
+            className="card-footer"
+            control={
+              <Switch defaultChecked onChange={colorMode.toggleColorMode} />
+            }
+            label="Toggle Theme"
+          />
+        </CardActions>
       </Card>
     </>
   );

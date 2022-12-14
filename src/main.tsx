@@ -1,21 +1,15 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+import { ToggleColorMode } from "./hooks/ColorModeContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
+    <ToggleColorMode>
       <CssBaseline />
       <App />
-    </ThemeProvider>
+    </ToggleColorMode>
   </React.StrictMode>
 );
