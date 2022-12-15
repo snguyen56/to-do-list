@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import "../assets/Dialog.css";
 
 type Props = {};
 

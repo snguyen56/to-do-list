@@ -4,15 +4,23 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditDialog from "./EditDialog";
 import Checkbox from "@mui/material/Checkbox";
 import "../assets/ToDoList.css";
+import { useState } from "react";
 
 type Props = {};
 
 function ToDoList({ data, handleEdit, handleDelete }: any) {
+  const [check, setCheck] = useState<boolean>(data.completed);
+  const handleChange = () => {
+    data.completed = !data.completed;
+    setCheck((check) => !check);
+    console.log(data);
+  };
+
   return (
     <div className="container">
       <div style={{ marginRight: 50 }}>
         <Typography>
-          <Checkbox checked={data.completed} />
+          <Checkbox checked={check} onChange={handleChange} />
           {data.todo}
         </Typography>
       </div>

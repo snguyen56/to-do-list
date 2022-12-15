@@ -6,12 +6,12 @@ import TextField from "@mui/material/TextField";
 import { Box } from "@mui/system";
 import { useEffect, useState, useContext } from "react";
 import { ColorModeContext } from "./hooks/ColorModeContext";
-import { useTheme } from "@mui/material/styles";
 import "./App.css";
 import Switch from "@mui/material/Switch/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import CardActions from "@mui/material/CardActions/CardActions";
 import ToDoList from "./components/ToDoList";
+import ButtonGroup from "@mui/material/ButtonGroup";
 
 type todo = {
   id: number;
@@ -21,14 +21,24 @@ type todo = {
 };
 
 function App() {
-  const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const [todo, setTodo] = useState<string>("");
   const [todoList, setTodoList] = useState<todo[]>([]);
+  const [filter, setFilter] = useState<string>("");
+
+  const handleFilter = async (filter: string) => {
+    setFilter(filter);
+  };
 
   const handleDelete = async (item: todo) => {
     setTodoList((todoList) =>
       todoList?.filter((todo: todo) => todo.id !== item.id)
+    );
+  };
+
+  const handleDeleteAll = async () => {
+    setTodoList((todoList) =>
+      todoList?.filter((todo: todo) => !todo.completed)
     );
   };
 
@@ -89,27 +99,42 @@ function App() {
               Add
             </Button>
           </form>
+          <div className="button-container">
+            <ButtonGroup variant="contained">
+              <Button onClick={() => handleFilter("")}>All</Button>
+              <Button onClick={() => handleFilter("pending")}>Pending</Button>
+              <Button onClick={() => handleFilter("completed")}>
+                Completed
+              </Button>
+            </ButtonGroup>
+            <Button color="error" variant="contained" onClick={handleDeleteAll}>
+              Delete All
+            </Button>
+          </div>
+          <Box sx={{ p: 2 }}>
+            <ul>
+              {todoList
+                ?.filter((todo: todo) => {
+                  if (filter === "pending") {
+                    return !todo.completed;
+                  } else if (filter === "completed") {
+                    return todo.completed;
+                  } else {
+                    return true;
+                  }
+                })
+                .map((data: any) => (
+                  <li key={data.id}>
+                    <ToDoList
+                      data={data}
+                      handleEdit={handleEdit}
+                      handleDelete={handleDelete}
+                    />
+                  </li>
+                ))}
+            </ul>
+          </Box>
         </CardContent>
-        <Box sx={{ p: 2 }}>
-          <ul>
-            {todoList?.map((data: any) => (
-              <li key={data.id}>
-                <ToDoList
-                  data={data}
-                  handleEdit={handleEdit}
-                  handleDelete={handleDelete}
-                />
-                {/* <Typography>
-                  {data.todo}
-                  <EditDialog data={data} handleEdit={handleEdit} />
-                  <IconButton disableRipple onClick={() => handleDelete(data)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Typography> */}
-              </li>
-            ))}
-          </ul>
-        </Box>
         <CardActions>
           <FormControlLabel
             className="card-footer"

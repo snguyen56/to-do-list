@@ -16,9 +16,9 @@ ul {
 .textbox {
   width: calc(100% - 64px);
 }
-.dialog {
-  width: "350px";
-  height: "75px";
-  padding: 10;
-  margin-bottom: 10;
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
 }
