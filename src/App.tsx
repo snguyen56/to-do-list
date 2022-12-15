@@ -129,7 +129,7 @@ function App() {
                   return true;
                 }
               })
-              .map((data: any) => (
+              .map((data: todo) => (
                 <li key={data.id}>
                   <ToDoList
                     data={data}

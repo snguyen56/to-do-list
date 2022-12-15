@@ -5,10 +5,15 @@ import Checkbox from "@mui/material/Checkbox";
 import "../assets/ToDoList.css";
 import { useState } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { todo } from "../App";
 
-type Props = {};
+type Props = {
+  data: todo;
+  handleEdit: (data: todo) => void;
+  handleDelete: (data: todo) => void;
+};
 
-function ToDoList({ data, handleEdit, handleDelete }: any) {
+function ToDoList({ data, handleEdit, handleDelete }: Props) {
   const [check, setCheck] = useState<boolean>(data.completed);
   const handleChange = () => {
     data.completed = !data.completed;

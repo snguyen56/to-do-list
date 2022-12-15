@@ -8,15 +8,9 @@ import TextField from "@mui/material/TextField";
 import "../assets/Dialog.css";
 import { todo } from "../App";
 
-type Props = {};
+type Props = { data: todo; handleEdit: (data: todo) => void };
 
-export default function EditDialog({
-  data,
-  handleEdit,
-}: {
-  data: todo;
-  handleEdit: any;
-}) {
+export default function EditDialog({ data, handleEdit }: Props) {
   const [open, setOpen] = useState(false);
   const [todo, setTodo] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
