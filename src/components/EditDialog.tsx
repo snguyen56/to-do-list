@@ -19,6 +19,7 @@ export default function EditDialog({
 }) {
   const [open, setOpen] = useState(false);
   const [todo, setTodo] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -31,8 +32,10 @@ export default function EditDialog({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (todo === "") {
+      setError(true);
       console.log("input cannot be empty");
     } else {
+      setError(false);
       data.todo = todo;
       handleEdit(data);
       setTodo("");
@@ -53,13 +56,15 @@ export default function EditDialog({
           onSubmit={handleSubmit}
           style={{
             maxWidth: "350px",
-            height: "75px",
+            height: "80px",
             padding: 10,
             marginBottom: 10,
           }}
         >
           <TextField
             variant="outlined"
+            error={error}
+            helperText={error ? "Input cannot be empty" : ""}
             onChange={(event) => setTodo(event.target.value)}
             value={todo}
           />

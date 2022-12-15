@@ -1,10 +1,10 @@
-import { Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditDialog from "./EditDialog";
 import Checkbox from "@mui/material/Checkbox";
 import "../assets/ToDoList.css";
 import { useState } from "react";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 type Props = {};
 
@@ -13,16 +13,16 @@ function ToDoList({ data, handleEdit, handleDelete }: any) {
   const handleChange = () => {
     data.completed = !data.completed;
     setCheck((check) => !check);
-    console.log(data);
   };
 
   return (
     <div className="container">
       <div style={{ marginRight: 50 }}>
-        <Typography>
-          <Checkbox checked={check} onChange={handleChange} />
-          {data.todo}
-        </Typography>
+        <FormControlLabel
+          control={<Checkbox checked={check} onChange={handleChange} />}
+          label={data.todo}
+          style={{ textDecoration: data.completed ? "line-through" : "" }}
+        />
       </div>
 
       <div style={{ minWidth: 80 }}>
