@@ -22,3 +22,7 @@ ul {
   justify-content: space-between;
   margin-top: 20px;
 }
+.toggle {
+  position: absolute;
+  top: 0;
+}

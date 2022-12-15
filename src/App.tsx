@@ -12,8 +12,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import CardActions from "@mui/material/CardActions/CardActions";
 import ToDoList from "./components/ToDoList";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import { LightSwitch } from "./assets/lightSwitch";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
-type todo = {
+export type todo = {
   id: number;
   todo: string;
   completed: boolean;
@@ -70,20 +73,32 @@ function App() {
     fetch("https://dummyjson.com/todos")
       .then((res) => res.json())
       .then((data) => setTodoList(data.todos));
-    // if (todoList) console.log(todoList);
   }, []);
 
   return (
     <>
       <Card className="card" raised>
-        <CardHeader title="To Do List" />
-        <CardContent sx={{ width: "100%" }}>
-          <form
-            noValidate
-            autoComplete="off"
-            onSubmit={handleSubmit}
-            style={{ width: "100%" }}
-          >
+        <div style={{ display: "flex" }}>
+          <CardActions className="toggle">
+            {/* <FormControlLabel
+              control={
+                <Switch defaultChecked onChange={colorMode.toggleColorMode} />
+              }
+              label="Toggle Theme"
+            /> */}
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography>Light</Typography>
+              <LightSwitch
+                defaultChecked
+                onChange={colorMode.toggleColorMode}
+              />
+              <Typography>Dark</Typography>
+            </Stack>
+          </CardActions>
+          <CardHeader title="To Do List" />
+        </div>
+        <CardContent>
+          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
             <TextField
               className="textbox"
               variant="outlined"
@@ -111,7 +126,7 @@ function App() {
               Delete All
             </Button>
           </div>
-          <Box sx={{ p: 2 }}>
+          <Box sx={{ p: 2, pb: 0 }}>
             <ul>
               {todoList
                 ?.filter((todo: todo) => {
@@ -135,15 +150,6 @@ function App() {
             </ul>
           </Box>
         </CardContent>
-        <CardActions>
-          <FormControlLabel
-            className="card-footer"
-            control={
-              <Switch defaultChecked onChange={colorMode.toggleColorMode} />
-            }
-            label="Toggle Theme"
-          />
-        </CardActions>
       </Card>
     </>
   );

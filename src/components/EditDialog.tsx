@@ -6,10 +6,17 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import "../assets/Dialog.css";
+import { todo } from "../App";
 
 type Props = {};
 
-export default function EditDialog({ data, handleEdit }: any) {
+export default function EditDialog({
+  data,
+  handleEdit,
+}: {
+  data: todo;
+  handleEdit: any;
+}) {
   const [open, setOpen] = useState(false);
   const [todo, setTodo] = useState<string>("");
 
