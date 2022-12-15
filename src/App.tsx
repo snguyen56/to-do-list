@@ -5,7 +5,7 @@ import CardHeader from "@mui/material/CardHeader";
 import TextField from "@mui/material/TextField";
 import { Box } from "@mui/system";
 import { useEffect, useState, useContext } from "react";
-import { ColorModeContext } from "./hooks/ColorModeContext";
+import { ColorModeContext } from "./context/ColorModeContext";
 import "./App.css";
 import Switch from "@mui/material/Switch/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -67,7 +67,7 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("https://dummyjson.com/todos?limit=5")
+    fetch("https://dummyjson.com/todos")
       .then((res) => res.json())
       .then((data) => setTodoList(data.todos));
     // if (todoList) console.log(todoList);
