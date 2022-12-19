@@ -88,7 +88,7 @@ function App() {
         </CardActions>
         <CardHeader title="To Do List" />
       </div>
-      <CardContent>
+      <CardContent style={{ paddingBottom: 0 }}>
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <TextField
             className="textbox"

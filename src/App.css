@@ -5,6 +5,13 @@
   margin: auto;
   min-width: 375px;
   max-width: 100vw;
+  margin-top: 10vh;
+}
+
+@media screen and (max-width: 600px) {
+  .card {
+    min-height: calc(100vh - 10vh);
+  }
 }
 .button {
   height: 56px;
