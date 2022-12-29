@@ -26,9 +26,9 @@ import {
 } from "firebase/firestore";
 
 export type todo = {
-  id?: string;
-  todo?: string;
-  completed?: boolean;
+  id: string;
+  todo: string;
+  completed: boolean;
 };
 
 function App() {
@@ -82,7 +82,8 @@ function App() {
           snapshot.docs.map((doc) => {
             return {
               id: doc.id,
-              ...doc.data(),
+              todo: doc.data().todo,
+              completed: doc.data().completed,
             };
           })
         );
