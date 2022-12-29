@@ -18,16 +18,17 @@ import {
   collection,
   doc,
   DocumentData,
-  getDocs,
   onSnapshot,
   QuerySnapshot,
+  deleteDoc,
+  addDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 export type todo = {
   id?: string;
   todo?: string;
   completed?: boolean;
-  // userId: number;
 };
 
 function App() {
@@ -43,23 +44,22 @@ function App() {
   };
 
   const handleDelete = (item: todo) => {
-    setTodoList((todoList) =>
-      todoList?.filter((todo: todo) => todo.id !== item.id)
-    );
+    const docRef = doc(db, "todos", item.id);
+    deleteDoc(docRef);
   };
 
   const handleDeleteAll = () => {
-    setTodoList((todoList) =>
-      todoList?.filter((todo: todo) => !todo.completed)
-    );
+    todoList.forEach((todo) => {
+      if (todo.completed) {
+        const docRef = doc(db, "todos", todo.id);
+        deleteDoc(docRef);
+      }
+    });
   };
 
   const handleEdit = (item: todo) => {
-    setTodoList((todoList) =>
-      todoList?.map((input) => {
-        return input.id === item.id ? { ...input, todo: item.todo } : input;
-      })
-    );
+    const todoDoc = doc(db, "todos", item.id);
+    updateDoc(todoDoc, { todo: item.todo });
   };
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -69,13 +69,7 @@ function App() {
       console.log("input cannot be empty");
     } else {
       setError(false);
-      const newTodo: todo = {
-        id: "test",
-        todo: todo,
-        completed: false,
-        // userId: 1,
-      };
-      setTodoList((todoList) => [...todoList, newTodo]);
+      addDoc(colRef, { todo: todo, completed: false });
       setTodo("");
     }
   };
@@ -95,10 +89,6 @@ function App() {
       }
     );
     return unsub;
-    // fetch("https://dummyjson.com/todos")
-    //   .then((res) => res.json())
-    //   .then((data) => setTodoList(data.todos));
-    // getTodos();
   }, []);
 
   return (

@@ -14,7 +14,7 @@ type Props = {
 };
 
 function ToDoList({ data, handleEdit, handleDelete }: Props) {
-  const [check, setCheck] = useState<boolean>(data.completed);
+  const [check, setCheck] = useState<boolean | undefined>(data.completed);
   const handleChange = () => {
     data.completed = !data.completed;
     setCheck((check) => !check);
