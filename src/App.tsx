@@ -13,12 +13,21 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { LightSwitch } from "./assets/LightSwitch";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { db } from "./firebase-config";
+import {
+  collection,
+  doc,
+  DocumentData,
+  getDocs,
+  onSnapshot,
+  QuerySnapshot,
+} from "firebase/firestore";
 
 export type todo = {
-  id: number;
-  todo: string;
-  completed: boolean;
-  userId: number;
+  id?: string;
+  todo?: string;
+  completed?: boolean;
+  // userId: number;
 };
 
 function App() {
@@ -27,6 +36,7 @@ function App() {
   const [todoList, setTodoList] = useState<todo[]>([]);
   const [filter, setFilter] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
+  const colRef = collection(db, "todos");
 
   const handleFilter = (filter: string) => {
     setFilter(filter);
@@ -60,10 +70,10 @@ function App() {
     } else {
       setError(false);
       const newTodo: todo = {
-        id: todoList.length + 1,
+        id: "test",
         todo: todo,
         completed: false,
-        userId: 1,
+        // userId: 1,
       };
       setTodoList((todoList) => [...todoList, newTodo]);
       setTodo("");
@@ -71,9 +81,24 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("https://dummyjson.com/todos")
-      .then((res) => res.json())
-      .then((data) => setTodoList(data.todos));
+    const unsub = onSnapshot(
+      colRef,
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        setTodoList(
+          snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data(),
+            };
+          })
+        );
+      }
+    );
+    return unsub;
+    // fetch("https://dummyjson.com/todos")
+    //   .then((res) => res.json())
+    //   .then((data) => setTodoList(data.todos));
+    // getTodos();
   }, []);
 
   return (
